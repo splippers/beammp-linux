@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=BeamMP
+Comment=Multiplayer launcher for BeamNG.drive (native Linux)
+Exec=__INSTALL_DIR__/BeamMP-Launcher
+Path=__INSTALL_DIR__
+Icon=steam_icon_284160
+Terminal=true
+Categories=Game;
+Keywords=BeamMP;BeamNG;multiplayer;

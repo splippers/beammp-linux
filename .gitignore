@@ -1,0 +1,9 @@
+# Runtime / generated files (not part of the repo)
+*.log
+session-events.log
+session-summary.txt
+beammp-launcher/
+
+# Build output
+bin/
+build/
