@@ -86,6 +86,12 @@ It writes `~/beammp-launcher/session-events.log` while you play and
 - On hybrid-GPU laptops BeamNG automatically selects the discrete GPU (it looks
   for a Vulkan device of type `Discrete`).
 
+## Upstream
+
+An issue proposing that the `httplib` dependency work without vcpkg (and that the
+UNIX link line use `httplib::httplib`) is tracked upstream:
+[BeamMP/BeamMP-Launcher#275](https://github.com/BeamMP/BeamMP-Launcher/issues/275).
+
 ## License & attribution
 
 The scripts in this repository are **MIT**-licensed — see [`LICENSE`](LICENSE).
