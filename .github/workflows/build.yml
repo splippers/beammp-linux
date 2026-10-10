@@ -1,0 +1,60 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+      - '.gitignore'
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly run, to catch upstream BeamMP-Launcher changes that break the recipe.
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-26.04]
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake git curl \
+            libcurl4-openssl-dev libssl-dev zlib1g-dev nlohmann-json3-dev
+
+      - name: Build and install the launcher
+        run: ./update-beammp.sh
+
+      - name: Smoke-test the binary
+        run: |
+          set -euo pipefail
+          BIN="$HOME/beammp-launcher/BeamMP-Launcher"
+          test -x "$BIN"
+          file "$BIN" | grep -q 'ELF 64-bit'
+          if ldd "$BIN" | grep -q 'not found'; then
+            echo "::error::unresolved shared library in $BIN"
+            ldd "$BIN"
+            exit 1
+          fi
+          timeout 10 "$BIN" --help > usage.txt
+          cat usage.txt
+          grep -q 'BeamMP-Launcher \[OPTIONS\]' usage.txt
+          echo "OK: built $(stat -c '%s bytes' "$BIN")"

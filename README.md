@@ -1,5 +1,7 @@
 # beammp-linux
 
+[![build](https://github.com/slippers/beammp-linux/actions/workflows/build.yml/badge.svg)](https://github.com/slippers/beammp-linux/actions/workflows/build.yml)
+
 Native Linux build recipe and helpers for the [BeamMP](https://beammp.com) client
 launcher for **BeamNG.drive**.
 
